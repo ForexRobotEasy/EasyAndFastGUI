@@ -1,0 +1,151 @@
+mql5
+//+------------------------------------------------------------------+
+//|                                         EasyAndFastGUI v2.0.mq5 |
+//|                      Copyright 2022, Forex Robot Easy Team      |
+//|                  https://www.forexroboteasy.com                   |
+//+------------------------------------------------------------------+
+
+#include <EasyAndFastGUI.mqh>
+
+//+------------------------------------------------------------------+
+//| Global Variables                                                 |
+//+------------------------------------------------------------------+
+CEasyAndFastGUI g_GUI;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   // Initialize the GUI
+   if (!g_GUI.Initialize())
+   {
+      Print('Failed to initialize EasyAndFastGUI library!');
+      return INIT_FAILED;
+   }
+   
+   // Add GUI elements
+   
+   // Add Buy and Sell buttons
+   if (!g_GUI.AddButton('Buy', 10, 10, 100, 30))
+   {
+      Print('Failed to add Buy button!');
+      return INIT_FAILED;
+   }
+   if (!g_GUI.AddButton('Sell', 120, 10, 100, 30))
+   {
+      Print('Failed to add Sell button!');
+      return INIT_FAILED;
+   }
+   
+   // Add Account Balance and Equity labels
+   if (!g_GUI.AddLabel('Balance:', 10, 50, 100, 20))
+   {
+      Print('Failed to add Balance label!');
+      return INIT_FAILED;
+   }
+   if (!g_GUI.AddLabel('Equity:', 10, 80, 100, 20))
+   {
+      Print('Failed to add Equity label!');
+      return INIT_FAILED;
+   }
+   
+   // Add Price Quote label
+   if (!g_GUI.AddLabel('EUR/USD: 1.2345', 10, 110, 150, 20))
+   {
+      Print('Failed to add Price Quote label!');
+      return INIT_FAILED;
+   }
+   
+   // Add Chart and Indicators
+   if (!g_GUI.AddChart('EUR/USD', 10, 140, 500, 300))
+   {
+      Print('Failed to add Chart!');
+      return INIT_FAILED;
+   }
+   if (!g_GUI.AddIndicator('Moving Average', 'EUR/USD', 10, 140, 500, 300))
+   {
+      Print('Failed to add Indicator!');
+      return INIT_FAILED;
+   }
+   
+   // Add Stop Loss and Take Profit inputs
+   if (!g_GUI.AddInput('Stop Loss', 10, 450, 100, 20))
+   {
+      Print('Failed to add Stop Loss input!');
+      return INIT_FAILED;
+   }
+   if (!g_GUI.AddInput('Take Profit', 120, 450, 100, 20))
+   {
+      Print('Failed to add Take Profit input!');
+      return INIT_FAILED;
+   }
+   
+   // Add Notification label
+   if (!g_GUI.AddLabel('Notifications:', 10, 480, 100, 20))
+   {
+      Print('Failed to add Notifications label!');
+      return INIT_FAILED;
+   }
+   
+   Print('EasyAndFastGUI library initialized successfully!');
+   
+   return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   // Cleanup the GUI
+   g_GUI.Cleanup();
+   
+   Print('EasyAndFastGUI library deinitialized.');
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   // Update GUI elements
+   
+   // Update Account Balance and Equity labels
+   g_GUI.UpdateLabel('Balance:', DoubleToString(AccountBalance(), 2));
+   g_GUI.UpdateLabel('Equity:', DoubleToString(AccountEquity(), 2));
+   
+   // Update Price Quote label
+   g_GUI.UpdateLabel('EUR/USD: 1.2345');
+   
+   // Update Chart and Indicators
+   g_GUI.UpdateChart('EUR/USD');
+   g_GUI.UpdateIndicator('Moving Average', 'EUR/USD');
+}
+
+//+------------------------------------------------------------------+
+//| Expert start function                                            |
+//+------------------------------------------------------------------+
+void OnStart()
+{
+   while (!IsStopped())
+   {
+      // Handle GUI events
+      if (g_GUI.HandleEvents())
+      {
+         // Handle Buy and Sell button clicks
+         if (g_GUI.IsButtonClicked('Buy'))
+         {
+            // Execute Buy order
+            // ...
+         }
+         else if (g_GUI.IsButtonClicked('Sell'))
+         {
+            // Execute Sell order
+            // ...
+         }
+      }
+      
+      Sleep(100);
+   }
+}
